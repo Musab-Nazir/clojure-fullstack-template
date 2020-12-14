@@ -1,0 +1,30 @@
+{:paths ["src" "resources"]
+ 
+ :deps {
+        org.clojure/clojure {:mvn/version "1.10.1"}
+        ;; HTTP Server
+        http-kit/http-kit {:mvn/version "2.5.0"}
+        ;; Database
+        seancorfield/next.jdbc {:mvn/version "1.1.613"}
+        com.h2database/h2 {:mvn/version "1.4.200"}
+        ;; Routing
+        metosin/reitit-ring {:mvn/version "0.5.10"}
+        metosin/reitit-middleware {:mvn/version "0.5.10"}
+        metosin/reitit-spec {:mvn/version "0.5.10"}
+        ;; Logging
+        com.taoensso/timbre {:mvn/version "5.1.0"}}
+ 
+ :aliases
+ {:test {:extra-paths ["test"]
+         :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}}}
+  
+  :runner
+  {:extra-deps {com.cognitect/test-runner
+                {:git/url "https://github.com/cognitect-labs/test-runner"
+                 :sha "b6b3193fcc42659d7e46ecd1884a228993441182"}}
+   :main-opts ["-m" "cognitect.test-runner"
+               "-d" "test"]}
+  
+  :uberjar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.128"}}
+            :main-opts ["-m" "hf.depstar.uberjar" "banking.jar"
+                        "-C" "-m" "musab.banking"]}}}
