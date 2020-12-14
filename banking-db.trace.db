@@ -1,0 +1,4 @@
+2020-12-14 17:19:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" already exists; SQL statement:
+create table Users (id int auto_increment primary key,
+   name varchar (255), email varchar (255)) [42101-200]
