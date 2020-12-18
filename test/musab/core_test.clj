@@ -1,4 +1,4 @@
-(ns musab.banking-test
+(ns musab.core-test
   (:require [clojure.test :refer :all]
             [musab.handler :refer [app]]))
 

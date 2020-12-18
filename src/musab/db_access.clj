@@ -1,7 +1,7 @@
 (ns musab.db-access
   (:require [next.jdbc :as jdbc]))
 
-(def db-spec {:dbtype "h2" :dbname "banking-db"})
+(def db-spec {:dbtype "h2" :dbname "app-db"})
 
 (def db-source (jdbc/get-datasource db-spec))
 

@@ -26,5 +26,5 @@
                "-d" "test"]}
   
   :uberjar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.128"}}
-            :main-opts ["-m" "hf.depstar.uberjar" "banking.jar"
-                        "-C" "-m" "musab.banking"]}}}
+            :main-opts ["-m" "hf.depstar.uberjar" "core.jar"
+                        "-C" "-m" "musab.core"]}}}

@@ -1,4 +1,4 @@
-(ns musab.banking
+(ns musab.core
   (:require 
    [org.httpkit.server :as app-server]
    [taoensso.timbre :as timbre :refer [log info warn error fatal]]
