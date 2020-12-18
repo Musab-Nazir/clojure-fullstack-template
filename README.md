@@ -1,18 +1,16 @@
-# banking
+# fullstack
 
-FIXME: my new application.
+Just a fullstack app for playing around with clojure libraries
 
 ## Installation
 
-Download from https://github.com/musab/banking
+Download from https://github.com/musab/clojure-fullstack
 
 ## Usage
 
-FIXME: explanation
-
 Run the project directly:
 
-    $ clojure -M -m musab.banking
+    $ clojure -M -m musab.core
 
 Run the project's tests (they'll fail until you edit them):
 
@@ -24,23 +22,7 @@ Build an uberjar:
 
 Run that uberjar:
 
-    $ java -jar banking.jar
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+    $ java -jar core.jar
 
 ## License
 
