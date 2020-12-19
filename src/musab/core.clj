@@ -1,5 +1,6 @@
 (ns musab.core
   (:require 
+   ;; third party libs
    [org.httpkit.server :as app-server]
    [taoensso.timbre :as timbre :refer [log info warn error fatal]]
    
@@ -24,6 +25,14 @@
     (reset! app-server-instance nil)
     (warn "Server shutdown")))
 
+(defn app-server-restart
+  "Calls app-server-stop, then calls app-server-start if the port provided
+   is a positive int"
+  [port]
+  (app-server-stop)
+  (when (pos-int? port)
+    (app-server-start port)))
+
 (defn -main
   "Tries to fetch the port from either the porvided args or the system env
    variable. If neither exists defaults to port 8888 and starts the server"
@@ -35,6 +44,7 @@
 (comment
   ;; start the app
   (-main 8080)
-  
+  ;; restart app
+  (app-server-restart 8080)
   ;; stop the server
   (app-server-stop))
