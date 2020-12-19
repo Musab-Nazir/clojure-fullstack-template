@@ -7,18 +7,41 @@
             [muuntaja.core :as m]
             #_[clojure.spec.alpha :as spec]))
 
-(declare
- routes
- base-handler
- ip-handler
- user-handler)
-
 ;; create muuntaja instance
 (def muuntaja-instance (m/create))
 
-(defn wrap [handler id]
-  (fn [request]
-    (update (handler request) :wrap (fnil conj '()) id)))
+(defn base-handler [_]
+  {:status  200
+   :headers {"Content-Type" "text/html"}
+   :body    "hello HTTP!"})
+
+(defn ip-handler [request]
+  {:status 200
+   :headers {"Content-Type" "text/plain"}
+   :body (:remote-addr request)})
+
+(defn user-handler [_]
+  {:status  200
+   :headers {"Content-Type" "text/html"}
+   :body    "This is the users page"})
+
+(def routes
+  ["/api"
+   ["/ping" {:get base-handler
+             :name ::ping}]
+
+   ["/ip" {:get ip-handler
+           :name ::ip}]
+
+   ["/math" {:get {:parameters {:query {:x int?, :y int?}}
+                   :responses {200 {:body {:total int?}}}
+                   :handler (fn [{{{:keys [x y]} :query} :parameters}]
+                              {:status 200
+                               :body {:total (+ x y)}})}}]
+
+   ["/admin"
+    ["/users" {:get user-handler
+               :post user-handler}]]])
 
 (def app
   (ring/ring-handler
@@ -38,38 +61,5 @@
                          coercion/coerce-request-middleware
                          ;; coercing response params
                          coercion/coerce-response-middleware]}})))
-
-(def routes
-  ["/api" {:middleware [[wrap :api]]}
-   ["/ping" {:get base-handler
-             :name ::ping}]
-
-   ["/ip" {:get ip-handler
-           :name ::ip}]
-
-   ["/math" {:get {:parameters {:query {:x int?, :y int?}}
-                   :responses {200 {:body {:total int?}}}
-                   :handler (fn [{{{:keys [x y]} :query} :parameters}]
-                              {:status 200
-                               :body {:total (+ x y)}})}}]
-
-   ["/admin" {:middleware [[wrap :admin]]}
-    ["/users" {:get user-handler
-               :post user-handler}]]])
-
-(defn base-handler [_]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "hello HTTP!"})
-
-(defn ip-handler [request]
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body (:remote-addr request)})
-
-(defn user-handler [_]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "This is the users page"})
 
 
