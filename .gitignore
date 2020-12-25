@@ -11,3 +11,5 @@
 .hg/
 /.calva
 /.cpcache
+/.clj-kondo
+/.lsp
