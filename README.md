@@ -18,9 +18,13 @@ Download from https://github.com/musab/clojure-fullstack
 
 ## Usage
 
-Run the project directly:
+Run the backend server:
 
     $ clojure -M -m musab.core
+    
+Run the frontend (have shadow-cljs installed either locally or globally):
+
+    $ npm start
 
 Run the project's tests (they'll fail until you edit them):
 
