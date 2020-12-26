@@ -1,13 +1,33 @@
 (ns musab.handler
-  (:require [reitit.ring :as ring]
-            [reitit.ring.coercion :as coercion]
-            [reitit.ring.middleware.parameters :as parameters]
-            [reitit.ring.middleware.muuntaja :as muuntaja]
-            [reitit.coercion.spec :as spec-coercion]
-            [muuntaja.core :as m]
-            [ring.middleware.cors :refer [wrap-cors]]
-            
-            [musab.db-access :as db]))
+  (:require
+   ;; third party libs
+   [reitit.ring :as ring]
+   [reitit.ring.coercion :as coercion]
+   [reitit.ring.middleware.parameters :as parameters]
+   [reitit.ring.middleware.muuntaja :as muuntaja]
+   [reitit.coercion.spec :as spec-coercion]
+   [muuntaja.core :as m]
+   [ring.middleware.cors :refer [wrap-cors]]
+   [ring.util.response :as r]
+   [hiccup.page :as h]
+   
+   ;; app specific
+   [musab.db-access :as db]))
+
+(defn page [meta-info & body]
+  (r/response
+   (h/html5 {:lang "en"}
+            [:head
+             [:title (get meta-info :title "Shadow Full Stack")]
+             [:meta {:charset "UTF-8"}]
+             [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
+             [:link {:rel "stylesheet" :href "/css/screen.css"}]]
+            (into [:body] body))))
+
+(defn spa [_]
+  (page {:title "shadow-cljs Full Stack - App"}
+        [:div#app]
+        (h/include-js "/js/app.js")))
 
 ;; create muuntaja instance
 (def muuntaja-instance 
@@ -31,7 +51,7 @@
 
 (def routes
   [
-   ["/" {:get base-handler}]
+   ["/" {:get spa}]
 
    ["/ip" {:get ip-handler
            :name ::ip}]

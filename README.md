@@ -17,12 +17,15 @@ Just a fullstack app template for myself (or others) to use in the future.
 Download from https://github.com/Musab-Nazir/clojure-fullstack-template
 
 ## Usage
+Build the frontend to ensure your cljs is compiled to js:
+
+    $ npm run script build
 
 Run the backend server on port 8080 (if no port is provided 8888 is used):
 
     $ clojure -M -m musab.core 8080
     
-Run the frontend. Must have shadow-cljs installed either locally or globally. The default port is 3000:
+Run the frontend in watch mode for dev purposes. The default port is 3000:
 
     $ npm start
 
