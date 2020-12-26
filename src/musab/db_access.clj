@@ -1,9 +1,17 @@
 (ns musab.db-access
-  (:require [next.jdbc :as jdbc]))
+  (:require [next.jdbc :as jdbc]
+            [next.jdbc.result-set :as rs]))
 
 (def db-spec {:dbtype "h2" :dbname "app-db"})
 
 (def db-source (jdbc/get-datasource db-spec))
+
+(defn get-all-users
+  []
+  (jdbc/execute!
+   db-source
+   ["select * from users"] 
+   {:builder-fn rs/as-unqualified-lower-maps}))
 
 (comment
   (jdbc/execute!
@@ -14,7 +22,7 @@
   (jdbc/execute!
    db-source
    ["insert into Users (name, email) values 
-     ('Musab Nazir', 'musabnazir@gmail.com')"])
+     ('The Doctor', 'timelord3000@tardis.com')"])
   
   (jdbc/execute!
    db-source

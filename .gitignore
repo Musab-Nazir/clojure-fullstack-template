@@ -11,3 +11,9 @@
 .hg/
 /.calva
 /.cpcache
+/.clj-kondo
+/.lsp
+/.shadow-cljs
+/node_modules
+resources/public/js
+package-lock.json

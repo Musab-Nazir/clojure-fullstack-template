@@ -13,7 +13,7 @@
 (defn app-server-start
   "Starts the backend server and logs the time of start"
   [http-port]
-  (info "Server started")
+  (info (str "Server started on port " http-port))
   (reset! app-server-instance (app-server/run-server 
                                handler/app {:port http-port})))
 

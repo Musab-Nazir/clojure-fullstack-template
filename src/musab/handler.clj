@@ -5,30 +5,33 @@
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.coercion.spec :as spec-coercion]
             [muuntaja.core :as m]
-            #_[clojure.spec.alpha :as spec]))
+            [ring.middleware.cors :refer [wrap-cors]]
+            
+            [musab.db-access :as db]))
 
 ;; create muuntaja instance
-(def muuntaja-instance (m/create))
+(def muuntaja-instance 
+  (m/create (-> m/default-options
+                (assoc :default-format "application/edn"))))
 
 (defn base-handler [_]
   {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "hello HTTP!"})
+   :headers {"content-type" "text/html"}
+   :body    "Hello :)"})
 
 (defn ip-handler [request]
   {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body (:remote-addr request)})
+   :headers {"content-type" "application/edn"}
+   :body {:ip (:remote-addr request)}})
 
 (defn user-handler [_]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "This is the users page"})
+  {:status 200
+   :headers {"content-type" "application/edn"}
+   :body {:users (db/get-all-users)}})
 
 (def routes
-  ["/api"
-   ["/ping" {:get base-handler
-             :name ::ping}]
+  [
+   ["/" {:get base-handler}]
 
    ["/ip" {:get ip-handler
            :name ::ip}]
@@ -38,10 +41,7 @@
                    :handler (fn [{{{:keys [x y]} :query} :parameters}]
                               {:status 200
                                :body {:total (+ x y)}})}}]
-
-   ["/admin"
-    ["/users" {:get user-handler
-               :post user-handler}]]])
+   ["/users" {:get user-handler :name ::users}]])
 
 (def app
   (ring/ring-handler
@@ -49,8 +49,13 @@
     routes
     {:data {:coercion spec-coercion/coercion
             :muuntaja muuntaja-instance
-            :middleware [;; query params and form params
+            :middleware [;; Cross origin resourse aka cors
+                         [wrap-cors
+                          :access-control-allow-origin [#".*"]
+                          :access-control-allow-methods [:get :put :post :delete]]
+                         ;; query params and form params
                          parameters/parameters-middleware
+                         muuntaja/format-negotiate-middleware
                          ;; encoding response body
                          muuntaja/format-response-middleware
                          ;; coerce execeptions
@@ -60,6 +65,9 @@
                          ;; coercing request params
                          coercion/coerce-request-middleware
                          ;; coercing response params
-                         coercion/coerce-response-middleware]}})))
+                         coercion/coerce-response-middleware]}})
+   (ring/routes
+    (ring/create-resource-handler {:path "/" :root "/public"})
+    (ring/create-default-handler))))
 
 
