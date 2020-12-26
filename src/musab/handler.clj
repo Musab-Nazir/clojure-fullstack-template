@@ -5,7 +5,9 @@
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.coercion.spec :as spec-coercion]
             [muuntaja.core :as m]
-            [ring.middleware.cors :refer [wrap-cors]]))
+            [ring.middleware.cors :refer [wrap-cors]]
+            
+            [musab.db-access :as db]))
 
 ;; create muuntaja instance
 (def muuntaja-instance 
@@ -22,6 +24,11 @@
    :headers {"content-type" "application/edn"}
    :body {:ip (:remote-addr request)}})
 
+(defn user-handler [_]
+  {:status 200
+   :headers {"content-type" "application/edn"}
+   :body {:users (db/get-all-users)}})
+
 (def routes
   [
    ["/" {:get base-handler}]
@@ -33,7 +40,8 @@
                    :responses {200 {:body {:total int?}}}
                    :handler (fn [{{{:keys [x y]} :query} :parameters}]
                               {:status 200
-                               :body {:total (+ x y)}})}}]])
+                               :body {:total (+ x y)}})}}]
+   ["/users" {:get user-handler :name ::users}]])
 
 (def app
   (ring/ring-handler

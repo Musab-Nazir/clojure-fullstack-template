@@ -2,11 +2,21 @@
   (:require
    [reagent.core :as reagent :refer [atom]]
    [reagent.dom :as rdom]
-   [reagent.session :as session]
-   [reitit.frontend :as reitit]
    [clerk.core :as clerk]
    [accountant.core :as accountant]
+   [reagent.session :as session]
+   [reitit.frontend :as reitit]
    [ajax.core :refer [GET]]))
+
+(declare home-page
+         ip-page
+         math-page
+         users-page
+         item-page
+         items-page)
+
+;; Page state
+(def page-state (atom {}))
 
 ;; -------------------------
 ;; Routes
@@ -16,6 +26,7 @@
    [["/" :index]
     ["/ip" :ip]
     ["/math" :math]
+    ["/users" :users]
     ["/items"
      ["" :items]
      ["/:item-id" :item]]]))
@@ -24,6 +35,30 @@
   (if params
     (:path (reitit/match-by-name router route params))
     (:path (reitit/match-by-name router route))))
+
+
+;; -------------------------
+;; Translate routes -> page components
+
+(defn page-for [route]
+  (case route
+    :index home-page
+    :math  math-page
+    :ip    ip-page
+    :users users-page
+    :items items-page
+    :item  item-page))
+
+;; -------------------------
+;; Page mounting component
+
+(defn current-page []
+  (fn []
+    (let [page (:current-page (session/get :route))]
+      [:div
+       [:header
+        [:p [:a {:href (path-for :index)} "Home"]]]
+       [page]])))
 
 ;; -------------------------
 ;; Page components
@@ -34,22 +69,40 @@
      [:h1 "Welcome to React"]
      [:ul
       [:li [:a {:href (path-for :items)} "Items of react"]]
+      [:li [:a {:href (path-for :users)} "List of users"]]
       [:li [:a {:href (path-for :ip)} "My IP"]]
-      [:li [:a {:href (path-for :math)} "1 + 2"]]]]))
+      [:li [:a {:href (path-for :math)} "1 + 2 (testing query params)"]]]]))
 
 (defn ip-page []
+  (GET "http://localhost:8080/ip"
+    {:handler (fn [x] (swap! page-state assoc :ip (:ip x)))})
   (fn []
-    (let [ip-address (GET "http://localhost:8080/ip"
-                       {:handler (fn [x] (println (:ip x)))})]
-      [:div (str "Your IP Address is " ip-address)])))
+    [:div (str "Your IP Address is " (@page-state :ip))]))
+
 
 (defn math-page []
+  (GET
+    "http://localhost:8080/math?x=1&y=2"
+    {:handler (fn [x]
+                (swap! page-state assoc :total (:total x)))})
   (fn []
-    (GET
-     "http://localhost:8080/math?x=1&y=2"
-     {:handler (fn [x]
-                 (println (:total x)))})
-    [:div "the result should be in the console"]))
+    [:div (str "1 + 2 =" (@page-state :total))]))
+
+(defn users-page []
+  (GET "http://localhost:8080/users"
+    {:handler (fn [res]
+                (swap! page-state assoc :users (res :users)))})
+  (fn []
+    [:div "Total Users:"
+     [:table>tbody (map (fn [user]
+                          (let [id (:id user)
+                                name (:name user)
+                                email (:email user)]
+                            [:tr {:key id}
+                             [:td id]
+                             [:td name]
+                             [:td email]]))
+                        (@page-state :users))]]))
 
 (defn items-page []
   (fn []
@@ -71,30 +124,6 @@
       [:span.main
        [:h1 (str "Item " item " of react")]
        [:p [:a {:href (path-for :items)} "Back to the list of items"]]])))
-
-
-;; -------------------------
-;; Translate routes -> page components
-
-(defn page-for [route]
-  (case route
-    :index #'home-page
-    :ip #'ip-page
-    :math #'math-page
-    :items #'items-page
-    :item #'item-page))
-
-
-;; -------------------------
-;; Page mounting component
-
-(defn current-page []
-  (fn []
-    (let [page (:current-page (session/get :route))]
-      [:div
-       [:header
-        [:p [:a {:href (path-for :index)} "Home"]]]
-       [page]])))
 
 ;; -------------------------
 ;; Initialize app
