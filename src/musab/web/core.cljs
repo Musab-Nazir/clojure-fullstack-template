@@ -24,9 +24,9 @@
 (def router
   (reitit/router
    [["/" :index]
-    ["/ip" :ip]
-    ["/math" :math]
-    ["/users" :users]
+    ["/ip-address" :ip]
+    ["/math-page" :math]
+    ["/users-page" :users]
     ["/items"
      ["" :items]
      ["/:item-id" :item]]]))

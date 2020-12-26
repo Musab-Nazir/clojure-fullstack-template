@@ -21,7 +21,7 @@
              [:title (get meta-info :title "Shadow Full Stack")]
              [:meta {:charset "UTF-8"}]
              [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-             [:link {:rel "stylesheet" :href "/css/screen.css"}]]
+             [:link {:rel "stylesheet" :href "/css/site.css"}]]
             (into [:body] body))))
 
 (defn spa [_]
@@ -33,11 +33,6 @@
 (def muuntaja-instance 
   (m/create (-> m/default-options
                 (assoc :default-format "application/edn"))))
-
-(defn base-handler [_]
-  {:status  200
-   :headers {"content-type" "text/html"}
-   :body    "Hello :)"})
 
 (defn ip-handler [request]
   {:status 200
