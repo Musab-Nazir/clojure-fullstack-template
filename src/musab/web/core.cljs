@@ -31,7 +31,7 @@
 (defn home-page []
   (fn []
     [:span.main
-     [:h1 "Welcome to react"]
+     [:h1 "Welcome to React"]
      [:ul
       [:li [:a {:href (path-for :items)} "Items of react"]]
       [:li [:a {:href (path-for :ip)} "My IP"]]

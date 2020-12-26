@@ -5,5 +5,4 @@
                            :asset-path "/js"
                            :modules    {:app {:init-fn musab.web.core/init!}}
                            :devtools   {:after-load musab.web.core/mount-root}}}
- :dev-http     {3000 {:root    "resources/public"
-                      :handler musab.handler/app}}}
+ :dev-http     {3000 {:root "resources/public"}}}
