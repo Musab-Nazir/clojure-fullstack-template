@@ -14,7 +14,7 @@ Just a fullstack app template for myself (or others) to use in the future.
 
 ## Installation
 
-Download from https://github.com/musab/clojure-fullstack-template
+Download from https://github.com/Musab-Nazir/clojure-fullstack-template
 
 ## Usage
 
