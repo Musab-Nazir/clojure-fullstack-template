@@ -1,4 +1,4 @@
-# fullstack
+# Clojure Fullstack Template
 
 Just a fullstack app template for myself (or others) to use in the future.
 

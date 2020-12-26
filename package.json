@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "",
-    "start": "shadow-cljs watch frontend"
+    "start": "shadow-cljs watch frontend",
+    "build": "shadow-cljs release frontend"
   },
   "repository": {
     "type": "git",
