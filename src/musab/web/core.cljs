@@ -38,22 +38,28 @@
       [:li [:a {:href (path-for :math)} "1 + 2"]]]]))
 
 (defn ip-page []
-  #(GET "localhost:8888/ip" {:handler (fn [x] (print x))}))
+  (fn []
+    (let [ip-address (GET "http://localhost:8080/ip"
+                       {:handler (fn [x] (println (:ip x)))})]
+      [:div (str "Your IP Address is " ip-address)])))
 
 (defn math-page []
-  #(GET "localhost:8888/math?x=1&y2" {:handler (fn [x] 
-                                                 (print x)
-                                                 [:div "the result should be in the console"])}))
+  (fn []
+    (GET
+     "http://localhost:8080/math?x=1&y=2"
+     {:handler (fn [x]
+                 (println (:total x)))})
+    [:div "the result should be in the console"]))
 
 (defn items-page []
   (fn []
     [:span.main
      [:h1 "The items of react"]
      [:ul (map (fn [item-id]
-                 [:li {:name (str "item-" item-id) 
+                 [:li {:name (str "item-" item-id)
                        :key (str "item-" item-id)}
-                  [:a {:href 
-                       (path-for :item {:item-id item-id})} 
+                  [:a {:href
+                       (path-for :item {:item-id item-id})}
                    "Item: " item-id]])
                (range 1 60))]]))
 
@@ -73,8 +79,8 @@
 (defn page-for [route]
   (case route
     :index #'home-page
-    :ip ip-page
-    :math math-page
+    :ip #'ip-page
+    :math #'math-page
     :items #'items-page
     :item #'item-page))
 
@@ -87,8 +93,7 @@
     (let [page (:current-page (session/get :route))]
       [:div
        [:header
-        [:p [:a {:href (path-for :index)} "Home"] " | "
-         [:a {:href (path-for :about)} "About react"]]]
+        [:p [:a {:href (path-for :index)} "Home"]]]
        [page]])))
 
 ;; -------------------------
