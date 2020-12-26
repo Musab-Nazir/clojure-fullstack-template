@@ -1,6 +1,16 @@
 # fullstack
 
-Just a fullstack app for playing around with clojure libraries
+Just a fullstack app template for myself (or others) to use in the future.
+
+
+## Software Stack
+* Reitit routing for both backend and frontend
+* H2 DB for fast and easy prototyping
+* Next JDBC as the DB library
+* Shadow-cljs for frontend build tool
+* Timbre for logging
+* Reagent for React
+* Dockerfile template
 
 ## Installation
 
