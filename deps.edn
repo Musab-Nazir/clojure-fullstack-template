@@ -1,12 +1,11 @@
 {:paths ["src" "resources"]
- 
- :deps {
-        org.clojure/clojure {:mvn/version "1.10.1"}
+
+ :deps {org.clojure/clojure {:mvn/version "1.10.1"}
         ;; HTTP Server
         http-kit/http-kit {:mvn/version "2.5.0"}
         ;; Database
         seancorfield/next.jdbc {:mvn/version "1.1.613"}
-        com.h2database/h2 {:mvn/version "1.4.200"}
+        sqlitejdbc/sqlitejdbc {:mvn/version "0.5.6"}
         ;; Routing
         ring-cors/ring-cors {:mvn/version "0.1.13"}
         metosin/reitit-ring {:mvn/version "0.5.10"}
@@ -18,7 +17,7 @@
         com.taoensso/timbre {:mvn/version "5.1.0"}
         ;; Config managment
         yogthos/config {:mvn/version "1.1.7"}
-        
+
         ;; Frontend stuff
         ;; _________________________________________________
         org.clojure/clojurescript {:mvn/version "1.10.773"}
@@ -32,18 +31,18 @@
         reagent/reagent {:mvn/version "1.0.0"}
         reagent-utils/reagent-utils {:mvn/version "0.3.3"}
         hiccup/hiccup {:mvn/version "2.0.0-alpha2"}}
- 
+
  :aliases
  {:test {:extra-paths ["test"]
          :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}}}
-  
+
   :runner
   {:extra-deps {com.cognitect/test-runner
                 {:git/url "https://github.com/cognitect-labs/test-runner"
                  :sha "b6b3193fcc42659d7e46ecd1884a228993441182"}}
    :main-opts ["-m" "cognitect.test-runner"
                "-d" "test"]}
-  
+
   :uberjar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.128"}}
             :main-opts ["-m" "hf.depstar.uberjar" "core.jar"
                         "-C" "-m" "musab.core"]}}}
