@@ -5,7 +5,7 @@ Just a fullstack app template for myself (or others) to use in the future.
 
 ## Software Stack
 * Reitit routing for both backend and frontend
-* H2 DB for fast and easy prototyping
+* SqLite DB for fast and easy prototyping
 * Next JDBC as the DB library
 * Shadow-cljs for frontend build tool
 * Timbre for logging
