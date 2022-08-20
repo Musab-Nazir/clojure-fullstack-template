@@ -35,15 +35,16 @@ Run the project's tests (they'll fail until you edit them):
 
 Build an uberjar:
 
-    $ clojure -M:uberjar
+    $ clj -T:build clean
+    $ clj -T:build uber
 
 Run that uberjar:
 
-    $ java -jar core.jar
+    $ java -jar target/app-0.0.2-standalone.jar
 
 ## License
 
-Copyright © 2020 Musab
+Copyright © 2022 Musab
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
