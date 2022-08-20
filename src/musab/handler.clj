@@ -10,7 +10,7 @@
    [ring.middleware.cors :refer [wrap-cors]]
    [ring.util.response :as r]
    [hiccup.page :as h]
-   
+
    ;; app specific
    [musab.db-access :as db]))
 
@@ -30,7 +30,7 @@
         (h/include-js "/js/app.js")))
 
 ;; create muuntaja instance
-(def muuntaja-instance 
+(def muuntaja-instance
   (m/create (-> m/default-options
                 (assoc :default-format "application/edn"))))
 
@@ -45,8 +45,7 @@
    :body {:users (db/get-all-users)}})
 
 (def routes
-  [
-   ["/" {:get spa}]
+  [["/" {:get spa}]
 
    ["/ip" {:get ip-handler
            :name ::ip}]

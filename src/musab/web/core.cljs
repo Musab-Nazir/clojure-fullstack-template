@@ -36,7 +36,6 @@
     (:path (reitit/match-by-name router route params))
     (:path (reitit/match-by-name router route))))
 
-
 ;; -------------------------
 ;; Translate routes -> page components
 
@@ -79,7 +78,6 @@
   (fn []
     [:div (str "Your IP Address is " (@page-state :ip))]))
 
-
 (defn math-page []
   (GET
     "http://localhost:8080/math?x=1&y=2"
@@ -115,7 +113,6 @@
                        (path-for :item {:item-id item-id})}
                    "Item: " item-id]])
                (range 1 60))]]))
-
 
 (defn item-page []
   (fn []

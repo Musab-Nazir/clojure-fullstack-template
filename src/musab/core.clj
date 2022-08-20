@@ -1,9 +1,9 @@
 (ns musab.core
-  (:require 
+  (:require
    ;; third party libs
    [org.httpkit.server :as app-server]
    [taoensso.timbre :as timbre :refer [log info warn error fatal]]
-   
+
    ;; app specific
    [musab.handler :as handler])
   (:gen-class))
@@ -14,7 +14,7 @@
   "Starts the backend server and logs the time of start"
   [http-port]
   (info (str "Server started on port " http-port))
-  (reset! app-server-instance (app-server/run-server 
+  (reset! app-server-instance (app-server/run-server
                                handler/app {:port http-port})))
 
 (defn app-server-stop
@@ -39,7 +39,6 @@
   [& [http-port]]
   (let [port (Integer. (or http-port (System/getenv "PORT") "8888"))]
     (app-server-start port)))
-
 
 (comment
   ;; start the app
